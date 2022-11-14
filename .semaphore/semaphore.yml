@@ -5,7 +5,7 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: 📦 Install dependencies
+  - name: "\U0001F4E6 Install dependencies"
     task:
       env_vars:
         - name: NODE_ENV
@@ -22,17 +22,16 @@ blocks:
         - name: client npm install and cache
           commands:
             - cd src/client
-            - cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master
+            - 'cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master'
             - npm install
             - cache store client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json) node_modules
         - name: server npm install and cache
           commands:
             - cd src/server
-            - cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master
+            - 'cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master'
             - npm install --legacy-peer-deps
             - cache store server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json) node_modules
-
-  - name: 🔍 Lint
+  - name: "\U0001F50D Lint"
     task:
       env_vars:
         - name: NODE_ENV
@@ -49,15 +48,14 @@ blocks:
         - name: Client Lint
           commands:
             - cd src/client
-            - cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master
+            - 'cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master'
             - npm run lint
         - name: Server Lint
           commands:
             - cd src/server
-            - cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master
+            - 'cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master'
             - npm run lint
-
-  - name: 🧪 Unit Tests
+  - name: "\U0001F9EA Unit Tests"
     task:
       env_vars:
         - name: NODE_ENV
@@ -75,20 +73,19 @@ blocks:
           commands:
             - export NAME="Client tests"
             - cd src/client
-            - cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master
+            - 'cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master'
             - npm test
         - name: Server Unit Tests
           commands:
             - export NAME="Server tests"
             - cd src/server
-            - cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master
+            - 'cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master'
             - npm test
       epilogue:
         always:
           commands:
-            - "[[ -f junit.xml ]] && test-results publish --name \"🧪 $NAME\" junit.xml"
-
-  - name: 🔄 E2E Tests
+            - "[[ -f junit.xml ]] && test-results publish --name \"\U0001F9EA $NAME\" junit.xml"
+  - name: "\U0001F504 E2E Tests"
     task:
       env_vars:
         - name: NODE_ENV
@@ -108,29 +105,27 @@ blocks:
           commands:
             - export NAME="Client tests"
             - cd src/client
-            - cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master
+            - 'cache restore client-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),client-node-modules-$SEMAPHORE_GIT_BRANCH,client-node-modules-master'
             - npx cypress install
-            - npm run test:e2e
+            - 'npm run test:e2e'
         - name: Server E2E Tests
           commands:
             - export NAME="Server tests"
             - cd src/server
-            - cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master
+            - 'cache restore server-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),server-node-modules-$SEMAPHORE_GIT_BRANCH,server-node-modules-master'
             - cp ormconfig.ci.json ormconfig.json
-            - npm run migrate:up
-            - npm run test:e2e
+            - 'npm run migrate:up'
+            - 'npm run test:e2e'
       epilogue:
         always:
           commands:
-            - "[[ -f junit.xml ]] && test-results publish --name \"🏗️ $NAME\" junit.xml"
-
+            - "[[ -f junit.xml ]] && test-results publish --name \"\U0001F3D7️ $NAME\" junit.xml"
 after_pipeline:
   task:
     jobs:
       - name: Publish Results
         commands:
           - test-results gen-pipeline-report
-
 promotions:
   - name: Dockerize server
     pipeline_file: server-docker-build.yml
