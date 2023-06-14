@@ -15,6 +15,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - sem-version node 16.16.0
           - nvm use
           - node --version
           - npm --version
@@ -41,6 +42,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - sem-version node 16.16.0
           - nvm use
           - node --version
           - npm --version
@@ -65,6 +67,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - sem-version node 16.16.0
           - nvm use
           - node --version
           - npm --version
@@ -95,6 +98,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - sem-version node 16.16.0
           - nvm use
           - node --version
           - npm --version
