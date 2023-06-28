@@ -10,15 +10,14 @@ blocks:
       env_vars:
         - name: BUCKET_NAME
           value: YOUR_APP_URL
-      secrets:
-        - name: gcr-secret
       jobs:
         - name: Deploy to Google Cloud Storage
           commands:
-            - gcloud auth activate-service-account --key-file=.secrets.gcp.json
-            - gcloud config set project $GCP_PROJECT_ID
-            - gcloud config set compute/zone $GCP_PROJECT_DEFAULT_ZONE
-            - cache restore client-build-$SEMAPHORE_WORKFLOW_ID
-            - 'gsutil -m rsync -r build gs://$BUCKET_NAME'
-            - 'gsutil iam ch allUsers:objectViewer gs://$BUCKET_NAME'
-            - 'gsutil web set -m index.html -e 404.html gs://$BUCKET_NAME'
+            - checkout
+            # gcloud auth activate-service-account --key-file=.secrets.gcp.json
+            # gcloud config set project $GCP_PROJECT_ID
+            # gcloud config set compute/zone $GCP_PROJECT_DEFAULT_ZONE
+            # cache restore client-build-$SEMAPHORE_WORKFLOW_ID
+            # 'gsutil -m rsync -r build gs://$BUCKET_NAME'
+            # 'gsutil iam ch allUsers:objectViewer gs://$BUCKET_NAME'
+            # 'gsutil web set -m index.html -e 404.html gs://$BUCKET_NAME'
